@@ -1,0 +1,2 @@
+C:\DS1\Week1\Debug\Week1.exe
+C:\DS1\Week1\Debug\Week1.pdb

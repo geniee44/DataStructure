@@ -1,75 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void myName(void) { //ÀÌ¸§ Ãâ·ÂÇÏ´Â ¸Ş¼Òµå
-	printf("===================\n");
-	printf("ÇĞ°ú: »çÀÌ¹öº¸¾È\n");
-	printf("ÇĞ¹ø: 1971077\n");
-	printf("¼º¸í: ¾ÈÇıÁø\n");
-	printf("===================\n");
-}
-
 typedef int element;
 typedef struct QueueNode {
 	element data;
 	struct QueueNode* link;
 }QueueNode;
 
-typedef struct { //front ³ëµå¿Í rear ³ëµå ÀúÀå
+typedef struct { //front ë…¸ë“œì™€ rear ë…¸ë“œ ì €ì¥
 	QueueNode* front, * rear;
 }LinkedQueueType;
 
-void error(const char* message) { //¿¡·¯ ¸Ş½ÃÁö Ãâ·Â
+void error(const char* message) { //ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥
 	fprintf(stderr, "%s\n", message);
 	exit(1);
 }
 
-void init_queue(LinkedQueueType* q) { //queue ³ëµå ÃÊ±âÈ­
+void init_queue(LinkedQueueType* q) { //queue ë…¸ë“œ ì´ˆê¸°í™”
 	q->front = NULL;
 	q->rear = NULL;
 }
 
-bool is_full(LinkedQueueType* q) { //¿¬°á¸®½ºÆ®´Â fullÀÏ °æ¿ì ¾øÀ½
+bool is_full(LinkedQueueType* q) { //ì—°ê²°ë¦¬ìŠ¤íŠ¸ëŠ” fullì¼ ê²½ìš° ì—†ìŒ
 	return 0;
 }
 
-bool is_empty(LinkedQueueType* q) { //front°¡ NULLÀÏ °æ¿ì empty
+bool is_empty(LinkedQueueType* q) { //frontê°€ NULLì¼ ê²½ìš° empty
 	return (q->front == NULL);
 }
 
 void enqueue(LinkedQueueType* q, element item) {
-	QueueNode* temp = (QueueNode*)malloc(sizeof(QueueNode)); //»õ ³ëµå µ¿ÀûÇÒ´ç
-	temp->data = item;	//µ¥ÀÌÅÍ ÀúÀå
-	temp->link = NULL;	//¸µÅ©´Â NULL
-	if (is_empty(q)) {	//queue°¡ empty¸é »õ·Î Ãß°¡µÈ node°¡ frontÀÌÀÚ rearÀÌ µÊ
+	QueueNode* temp = (QueueNode*)malloc(sizeof(QueueNode)); //ìƒˆ ë…¸ë“œ ë™ì í• ë‹¹
+	temp->data = item;	//ë°ì´í„° ì €ì¥
+	temp->link = NULL;	//ë§í¬ëŠ” NULL
+	if (is_empty(q)) {	//queueê°€ emptyë©´ ìƒˆë¡œ ì¶”ê°€ëœ nodeê°€ frontì´ì rearì´ ë¨
 		q->front = temp;
 		q->rear = temp;
 	}
-	else {				//°ø¹éÀÌ ¾Æ´Ï¸é ±âÁ¸ÀÇ rear°¡ »õ ³ëµå¸¦ °¡¸®Å°°Ô ÇÔ
+	else {				//ê³µë°±ì´ ì•„ë‹ˆë©´ ê¸°ì¡´ì˜ rearê°€ ìƒˆ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ê²Œ í•¨
 		q->rear->link = temp;
-		q->rear = temp;	//»õ ³ëµå°¡ rearÀÌ µÊ
+		q->rear = temp;	//ìƒˆ ë…¸ë“œê°€ rearì´ ë¨
 	}
 }
 
 element dequeue(LinkedQueueType* q) {
 	if (is_empty(q))	error("queue is empty");
 	element data;
-	QueueNode* temp = q->front;				//±âÁ¸ÀÇ front°¡ °¡¸®Å°´ø ³ëµå À§Ä¡¸¦ ÀúÀå
-	data = temp->data;						//±âÁ¸ÀÇ front°¡ °¡¸®Å°´ø °ªÀ» ¹Ì¸® ÀúÀå
-	q->front = q->front->link;				//±âÁ¸ÀÇ front°¡ °¡¸®Å°´ø ³ëµå°¡ »õ·Ó°Ô front°¡ µÊ
-	if (q->front == NULL)	q->rear = NULL;	//³ëµå°¡ ÇÏ³ª¸¸ ÀÖ¾ú´Ù¸é queue ÀÚÃ¼¸¦ °ø¹éÀ¸·Î ¸¸µé¾îÁÜ
-	free(temp);								//±âÁ¸ front ³ëµå ¸Ş¸ğ¸®¸¦ ¹İÈ¯
-	return data;							//dequeueµÈ µ¥ÀÌÅÍ ¹İÈ¯
+	QueueNode* temp = q->front;				//ê¸°ì¡´ì˜ frontê°€ ê°€ë¦¬í‚¤ë˜ ë…¸ë“œ ìœ„ì¹˜ë¥¼ ì €ì¥
+	data = temp->data;						//ê¸°ì¡´ì˜ frontê°€ ê°€ë¦¬í‚¤ë˜ ê°’ì„ ë¯¸ë¦¬ ì €ì¥
+	q->front = q->front->link;				//ê¸°ì¡´ì˜ frontê°€ ê°€ë¦¬í‚¤ë˜ ë…¸ë“œê°€ ìƒˆë¡­ê²Œ frontê°€ ë¨
+	if (q->front == NULL)	q->rear = NULL;	//ë…¸ë“œê°€ í•˜ë‚˜ë§Œ ìˆì—ˆë‹¤ë©´ queue ìì²´ë¥¼ ê³µë°±ìœ¼ë¡œ ë§Œë“¤ì–´ì¤Œ
+	free(temp);								//ê¸°ì¡´ front ë…¸ë“œ ë©”ëª¨ë¦¬ë¥¼ ë°˜í™˜
+	return data;							//dequeueëœ ë°ì´í„° ë°˜í™˜
 }
 
-void print_queue(LinkedQueueType* q) {	//¸®½ºÆ®¿¡ ÀÖ´Â °ª ÀüÃ¼ Ãâ·Â
+void print_queue(LinkedQueueType* q) {	//ë¦¬ìŠ¤íŠ¸ì— ìˆëŠ” ê°’ ì „ì²´ ì¶œë ¥
 	for (QueueNode* p = q->front; p != NULL; p = p->link) {
 		printf("%3d |", p->data);
 	}
 	printf("\n");
 }
 
-int count_que(LinkedQueueType* q) {		//¸®½ºÆ®¿¡ ¸î°³ÀÇ element°¡ µé¾îÀÖ´ÂÁö for ¹İº¹¹®À¸·Î count
+int count_que(LinkedQueueType* q) {		//ë¦¬ìŠ¤íŠ¸ì— ëª‡ê°œì˜ elementê°€ ë“¤ì–´ìˆëŠ”ì§€ for ë°˜ë³µë¬¸ìœ¼ë¡œ count
 	int count = 0;
 	for (QueueNode* p = q->front; p != NULL; p = p->link) {
 		count++;
@@ -77,33 +69,32 @@ int count_que(LinkedQueueType* q) {		//¸®½ºÆ®¿¡ ¸î°³ÀÇ element°¡ µé¾îÀÖ´ÂÁö for 
 	return count;
 }
 
-void card_queue(LinkedQueueType* q, int num) {	//Ä«µå ¼¯´Â ¸Ş¼Òµå
-	print_queue(q);			//ÇöÀç ¸®½ºÆ® ¸ÕÀú Ãâ·Â
-	if (is_empty(q)) error("queue empty");	//ÀÔ·Â¹ŞÀº °ªÀÌ 0ÀÌ¶ó¼­ ¸®½ºÆ®°¡ ºñ¾îÀÖÀ» °æ¿ì Ãâ·Â
-	while (1) {				//queue¿¡ element°¡ ÇÏ³ª ³²¾Æ break µÇ±â Àü±îÁö µ¹±â
+void card_queue(LinkedQueueType* q, int num) {	//ì¹´ë“œ ì„ëŠ” ë©”ì†Œë“œ
+	print_queue(q);			//í˜„ì¬ ë¦¬ìŠ¤íŠ¸ ë¨¼ì € ì¶œë ¥
+	if (is_empty(q)) error("queue empty");	//ì…ë ¥ë°›ì€ ê°’ì´ 0ì´ë¼ì„œ ë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìˆì„ ê²½ìš° ì¶œë ¥
+	while (1) {				//queueì— elementê°€ í•˜ë‚˜ ë‚¨ì•„ break ë˜ê¸° ì „ê¹Œì§€ ëŒê¸°
 		if (count_que(q) == 1)	break;
-		dequeue(q);			//°¡Àå ¾Õ¿¡ ÀÖ´Â Ä«µå Á¦°Å
+		dequeue(q);			//ê°€ì¥ ì•ì— ìˆëŠ” ì¹´ë“œ ì œê±°
 		print_queue(q);
 		if (count_que(q) == 1)	break;
-		enqueue(q, dequeue(q));	//°¡Àå ¾Õ¿¡ ÀÖ´ø Ä«µå¸¦ µÚ·Î º¸³»±â
+		enqueue(q, dequeue(q));	//ê°€ì¥ ì•ì— ìˆë˜ ì¹´ë“œë¥¼ ë’¤ë¡œ ë³´ë‚´ê¸°
 		print_queue(q);
 	}
-	printf("Final element is %d", q->front->data);	//element°¡ ÇÏ³ª ³²¾Æ¼­ ¹İº¹¹®À» ºüÁ®³ª¿ÔÀ» °æ¿ì ³²¾ÆÀÖ´Â element°¡ ¹«¾ùÀÎÁö Ãâ·Â
+	printf("Final element is %d", q->front->data);	//elementê°€ í•˜ë‚˜ ë‚¨ì•„ì„œ ë°˜ë³µë¬¸ì„ ë¹ ì ¸ë‚˜ì™”ì„ ê²½ìš° ë‚¨ì•„ìˆëŠ” elementê°€ ë¬´ì—‡ì¸ì§€ ì¶œë ¥
 }
 
 int main(void) {
-	myName();				//ÀÌ¸§ Ãâ·Â
 	LinkedQueueType q;
-	init_queue(&q);			//¸®½ºÆ® ÃÊ±âÈ­
+	init_queue(&q);			//ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
 
 	int num;
 	printf("Input number of cards: ");
-	scanf("%d", &num);		//Ä«µå ¸îÀåÀÎÁö ÀÔ·Â ¹Ş±â
+	scanf("%d", &num);		//ì¹´ë“œ ëª‡ì¥ì¸ì§€ ì…ë ¥ ë°›ê¸°
 	
-	for (int i = 1; i < num + 1; i++) {	//Ä«µå °¹¼ö¸¸Å­ Å¥¿¡ element ÀúÀå
+	for (int i = 1; i < num + 1; i++) {	//ì¹´ë“œ ê°¯ìˆ˜ë§Œí¼ íì— element ì €ì¥
 		enqueue(&q, i);
 	}
-	card_queue(&q, num);	//Ä«µå ¼¯´Â ¸Ş¼Òµå ½ÇÇà
+	card_queue(&q, num);	//ì¹´ë“œ ì„ëŠ” ë©”ì†Œë“œ ì‹¤í–‰
 
 	return 0;
 }
